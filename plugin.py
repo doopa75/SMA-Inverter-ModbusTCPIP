@@ -17,7 +17,7 @@ Requirements:
                 <option label="other" value="other"/>
             </options>
         </param>
-        <param field="Address" label="IP Address" width="200px" required="true" default="192.168.1.45"/>
+        <param field="Address" label="Your SMA IP_Address" width="200px" required="true" default="192.168.1.45"/>
         <param field="Port" label="Port" width="40px" required="true" default="502"/>
         <param field="Mode1" label="Device ID" width="40px" required="true" default="3" />
         <param field="Mode3" label="Reading Interval min." width="40px" required="true" default="1" />
@@ -44,7 +44,7 @@ class BasePlugin:
 
     def onStart(self):
         devicecreated = []
-        Domoticz.Log("SMA Sunny Tripower Modbus plugin start")
+        Domoticz.Log("SMA Inverter Modbus plugin start")
         self.runInterval = int(Parameters["Mode3"]) * 1
 
 
@@ -67,7 +67,7 @@ class BasePlugin:
 
 
     def onStop(self):
-        Domoticz.Log("SMA Sunny Tripower Modbus plugin stop")
+        Domoticz.Log("SMA Inverter Modbus plugin stop")
 
     def onHeartbeat(self):
         self.runInterval -=1;
