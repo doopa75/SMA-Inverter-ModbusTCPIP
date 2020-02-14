@@ -79,7 +79,7 @@ class BasePlugin:
         else:
             Domoticz.Log("Your inverter is unknow")
 
-        #DCVreg = 30771
+        
 
         if self.runInterval <= 0:
             # Get data from SMA
