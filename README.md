@@ -1,3 +1,4 @@
-# SMA-Inverter-ModbusTCPIP Power Analyser for the domoticz plugin
-SMA Sunny Tripower works, 
+#The Domoticz plugin for SMA Inverters works via ModbusTCPIP 
+SMA Sunny Tripower,
+
 Sun Boy not yet
