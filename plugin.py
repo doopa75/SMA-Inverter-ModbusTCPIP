@@ -71,17 +71,9 @@ class BasePlugin:
 
     def onHeartbeat(self):
         self.runInterval -=1;
-        if (Parameters["Mode2"] == "tri"):
-            DCVreg = 30771
-
-        elif (Parameters["Mode2"] == "boy"):
-            Domoticz.Log("Your inverter is SMA Sunny Boy")
-        else:
-            Domoticz.Log("Your inverter is unknow")
-
         
-
-        if self.runInterval <= 0:
+        if self.runInterval <= 0 and (Parameters["Mode2"] == "tri"):
+            DCVreg = 30771
             # Get data from SMA
             try:
                 c = ModbusClient(host=Parameters["Address"], port=Parameters["Port"], unit_id=Parameters["Mode1"], auto_open=True, auto_close=True)
@@ -144,6 +136,12 @@ class BasePlugin:
 
             self.runInterval = int(Parameters["Mode3"]) * 6
 
+        elif self.runInterval <= 0 and (Parameters["Mode2"] == "boy"):
+            Domoticz.Log("Your inverter is SMA Sunny Boy")
+            self.runInterval = int(Parameters["Mode3"]) * 6
+        else:
+            Domoticz.Log("Your inverter is unknow")
+            self.runInterval = int(Parameters["Mode3"]) * 6
 
 global _plugin
 _plugin = BasePlugin()
