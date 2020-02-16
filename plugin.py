@@ -109,7 +109,7 @@ class BasePlugin:
                 ACP3 = decoderACP3.decode_32bit_uint()
                 #Domoticz.Log("DCV decode " + str(DCV))
 
-                if (DCV == 2147483648):
+                if (DCV == 2147483648) or (DCA == 2147483648) or (DCP == 2147483648) or (ACP == 2147483648) or (ACP1 == 2147483648) or (ACP2== 2147483648) or (ACP3 == 2147483648):
                     #Domoticz.Log("Fake DC Voltage " + str(DCV))
                     DCV = 0
                     #Domoticz.Log("Only DC Voltage update by zero " + str(DCV))
