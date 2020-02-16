@@ -8,7 +8,7 @@ Requirements:
 
 """
 """
-<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.0" author="doki">
+<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.1" author="doki">
     <params>
         <param field="Mode2" label="SMA inverter" width="120px" required="true">
             <options>
@@ -71,7 +71,7 @@ class BasePlugin:
 
     def onHeartbeat(self):
         self.runInterval -=1;
-        
+
         if self.runInterval <= 0: # and (Parameters["Mode2"] == "tri"):
             DCVreg = 30771
             # Get data from SMA
