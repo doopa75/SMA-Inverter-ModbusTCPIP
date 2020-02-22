@@ -72,7 +72,7 @@ class BasePlugin:
     def onHeartbeat(self):
         self.runInterval -=1;
 
-        if (self.runInterval <= 0 and Parameters["Mode2"] == "tri"):
+        if ((self.runInterval <= 0) and (Parameters["Mode2"] == "tri")):
             DCVreg = 30771
             # Get data from SMA
             try:
