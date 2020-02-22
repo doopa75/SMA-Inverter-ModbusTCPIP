@@ -8,7 +8,7 @@ Requirements:
 
 """
 """
-<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.2" author="doki">
+<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.3" author="doki">
     <params>
         <param field="Mode2" label="SMA inverter" width="120px" required="true">
             <options>
@@ -90,7 +90,8 @@ class BasePlugin:
                 Domoticz.Log("Connection problem");
 
             else:
-                #Domoticz.Log("DCV Data from SMA" + str(dataDCV))
+                if Parameters["Mode6"] == 'Debug': Domoticz.Log("DCV Data from SMA" + str(dataDCV))
+
                 decoder = BinaryPayloadDecoder.fromRegisters(data, byteorder=Endian.Big, wordorder=Endian.Big)
                 decoderDCA = BinaryPayloadDecoder.fromRegisters(dataDCA, byteorder=Endian.Big, wordorder=Endian.Big)
                 decoderDCV = BinaryPayloadDecoder.fromRegisters(dataDCV, byteorder=Endian.Big, wordorder=Endian.Big)
@@ -107,7 +108,8 @@ class BasePlugin:
                 ACP1 = decoderACP1.decode_32bit_uint()
                 ACP2 = decoderACP2.decode_32bit_uint()
                 ACP3 = decoderACP3.decode_32bit_uint()
-                #Domoticz.Log("DCV decode " + str(DCV))
+
+                if Parameters["Mode6"] == 'Debug': Domoticz.Log("DCV decode " + str(DCV))
 
                 if (DCV == 2147483648) or (DCA == 2147483648) or (DCP == 2147483648) or (ACP == 2147483648) or (ACP1 == 2147483648) or (ACP2== 2147483648) or (ACP3 == 2147483648):
                     if Parameters["Mode6"] == 'Debug': Domoticz.Log("Fake DC Voltage " + str(DCV))
@@ -121,7 +123,7 @@ class BasePlugin:
                     if Parameters["Mode6"] == 'Debug': Domoticz.Log("Update DC Voltage " + str(DCV))
 
                     #Update devices
-                    Domoticz.Log("Update AC Power " + str(ACP))
+                    if Parameters["Mode6"] == 'Debug': Domoticz.Log("Update AC Power " + str(ACP))
                     Devices[1].Update(0,str(Solar_Production))
                     Devices[2].Update(0,str(DCV))
                     Devices[3].Update(0,str(ACP))
@@ -130,9 +132,6 @@ class BasePlugin:
                     Devices[6].Update(0,str(ACP1))
                     Devices[7].Update(0,str(ACP2))
                     Devices[8].Update(0,str(ACP3))
-
-            #if Parameters["Mode6"] == 'Debug':
-            #   Domoticz.Log("Debug mode  DC Voltage " + str(DCV))
 
             self.runInterval = int(Parameters["Mode3"]) * 6
 
