@@ -72,7 +72,7 @@ class BasePlugin:
     def onHeartbeat(self):
         self.runInterval -=1;
 
-        if self.runInterval <= 0: #and (Parameters["Mode2"] == "tri")):
+        if (self.runInterval <= 0 and Parameters["Mode2"] == "tri"):
             DCVreg = 30771
             # Get data from SMA
             try:
@@ -110,18 +110,18 @@ class BasePlugin:
                 #Domoticz.Log("DCV decode " + str(DCV))
 
                 if (DCV == 2147483648) or (DCA == 2147483648) or (DCP == 2147483648) or (ACP == 2147483648) or (ACP1 == 2147483648) or (ACP2== 2147483648) or (ACP3 == 2147483648):
-                    #Domoticz.Log("Fake DC Voltage " + str(DCV))
+                    if Parameters["Mode6"] == 'Debug': Domoticz.Log("Fake DC Voltage " + str(DCV))
                     DCV = 0
-                    #Domoticz.Log("Only DC Voltage update by zero " + str(DCV))
+                    if Parameters["Mode6"] == 'Debug': Domoticz.Log("Only DC Voltage update by zero " + str(DCV))
                     Devices[2].Update(0,str(DCV))
 
                 else:
                     DCV = str(round(DCV / 100, 2))
                     DCA = str(round(DCA / 1000, 2))
-                    #Domoticz.Log("Update DC Voltage " + str(DCV))
+                    if Parameters["Mode6"] == 'Debug': Domoticz.Log("Update DC Voltage " + str(DCV))
 
                     #Update devices
-                    #Domoticz.Log("Update AC Power " + str(ACP))
+                    Domoticz.Log("Update AC Power " + str(ACP))
                     Devices[1].Update(0,str(Solar_Production))
                     Devices[2].Update(0,str(DCV))
                     Devices[3].Update(0,str(ACP))
@@ -136,12 +136,13 @@ class BasePlugin:
 
             self.runInterval = int(Parameters["Mode3"]) * 6
 
-        #elif (self.runInterval <= 0 and Parameters["Mode2"] == "boy"):
-            #Domoticz.Log("Your inverter is SMA Sunny Boy")
-            #self.runInterval = int(Parameters["Mode3"]) * 6
-        #else:
-            #Domoticz.Log("Your inverter is unknow")
-            #self.runInterval = int(Parameters["Mode3"]) * 6
+        elif (self.runInterval <= 0 and Parameters["Mode2"] == "boy"):
+            Domoticz.Log("Your inverter is SMA Sunny Boy")
+            self.runInterval = int(Parameters["Mode3"]) * 6
+
+        elif (self.runInterval <= 0 and Parameters["Mode2"] == "other"):
+            Domoticz.Log("Your inverter is SMA Sunny Boy")
+            self.runInterval = int(Parameters["Mode3"]) * 6
 
 global _plugin
 _plugin = BasePlugin()
