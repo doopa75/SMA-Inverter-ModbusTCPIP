@@ -11,6 +11,8 @@ SMA Sunny Tripower:
 * Modbus server TCP enabled,
 * Modbus server UDP enabled.
 
+https://www.sma-sunny.com/en/how-to-test-the-connection-to-your-sma-inverter/
+
 **Installation:**
 
 cd ~/domoticz/plugins
