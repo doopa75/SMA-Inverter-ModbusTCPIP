@@ -7,13 +7,14 @@ Sunny Boy not yet
 
 **Requirements:**
 
-    SMA Sunny Tripower:
-      * Modbus server TCP enabled,
-      * Modbus server UDP enabled.
+SMA Sunny Tripower:
+* Modbus server TCP enabled,
+* Modbus server UDP enabled.
 
 **Installation:**
 
 cd ~/domoticz/plugins
+
 git clone https://github.com/doopa75/SMA-Inverter-ModbusTCPIP
 
 Then restart domoticz with: ```sudo service domoticz.sh restart```
