@@ -90,7 +90,7 @@ class BasePlugin:
                 Domoticz.Log("Connection problem");
 
             else:
-                if Parameters["Mode6"] == 'Debug': Domoticz.Log("DCV Data from SMA" + str(dataDCV))
+                if Parameters["Mode6"] == 'Debug': Domoticz.Log("DCV Data from SMA" + str(dataDCV)) Domoticz.Log("Solar_Production Data from SMA" + str(data))
 
                 decoder = BinaryPayloadDecoder.fromRegisters(data, byteorder=Endian.Big, wordorder=Endian.Big)
                 decoderDCA = BinaryPayloadDecoder.fromRegisters(dataDCA, byteorder=Endian.Big, wordorder=Endian.Big)
