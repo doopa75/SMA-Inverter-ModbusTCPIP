@@ -8,7 +8,7 @@ Requirements:
 
 """
 """
-<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.3" author="doki">
+<plugin key="SMA" name="SMA-ModbusTCPIP" version="0.7.5" author="doki">
     <params>
         <param field="Mode2" label="SMA inverter" width="120px" required="true">
             <options>
@@ -47,24 +47,29 @@ class BasePlugin:
         Domoticz.Log("SMA Inverter Modbus plugin start")
         self.runInterval = int(Parameters["Mode3"]) * 1
 
+        if (Parameters["Mode2"] == "tri"):
+           Domoticz.Log("SMA Tripower")
+           if 1 not in Devices:
+             Domoticz.Device(Name="Solar Production", Unit=1,Type=0x71,Subtype=0x0,Used=0).Create()
+           if 2 not in Devices:
+             Domoticz.Device(Name="SMA DC Voltage", Unit=2,TypeName="Voltage",Used=0).Create()
+           if 3 not in Devices:
+             Domoticz.Device(Name="Active Power AC", Unit=3,TypeName="Usage",Used=0).Create()
+           if 4 not in Devices:
+             Domoticz.Device(Name="Active Power DC", Unit=4,TypeName="Usage",Used=0).Create()
+           if 5 not in Devices:
+             Domoticz.Device(Name="DC Current", Unit=5,TypeName="Current (Single)",Used=0).Create()
+           if 6 not in Devices:
+             Domoticz.Device(Name="Active Power L1", Unit=6,TypeName="Usage",Used=0).Create()
+           if 7 not in Devices:
+             Domoticz.Device(Name="Active Power L2", Unit=7,TypeName="Usage",Used=0).Create()
+           if 8 not in Devices:
+             Domoticz.Device(Name="Active Power L3", Unit=8,TypeName="Usage",Used=0).Create()
 
-        if 1 not in Devices:
-            Domoticz.Device(Name="Solar Production", Unit=1,Type=0x71,Subtype=0x0,Used=0).Create()
-        if 2 not in Devices:
-            Domoticz.Device(Name="SMA DC Voltage", Unit=2,TypeName="Voltage",Used=0).Create()
-        if 3 not in Devices:
-            Domoticz.Device(Name="Active Power AC", Unit=3,TypeName="Usage",Used=0).Create()
-        if 4 not in Devices:
-            Domoticz.Device(Name="Active Power DC", Unit=4,TypeName="Usage",Used=0).Create()
-        if 5 not in Devices:
-            Domoticz.Device(Name="DC Current", Unit=5,TypeName="Current (Single)",Used=0).Create()
-        if 6 not in Devices:
-            Domoticz.Device(Name="Active Power L1", Unit=6,TypeName="Usage",Used=0).Create()
-        if 7 not in Devices:
-            Domoticz.Device(Name="Active Power L2", Unit=7,TypeName="Usage",Used=0).Create()
-        if 8 not in Devices:
-            Domoticz.Device(Name="Active Power L3", Unit=8,TypeName="Usage",Used=0).Create()
-
+        elif (Parameters["Mode2"] == "boy"):
+            Domoticz.Log("SMA Sunny Boy")
+        elif (Parameters["Mode2"] == "other"):
+            Domoticz.Log("Unknown inverter")
 
     def onStop(self):
         Domoticz.Log("SMA Inverter Modbus plugin stop")
@@ -91,9 +96,8 @@ class BasePlugin:
 
             else:
                 if Parameters["Mode6"] == 'Debug':
-                    Domoticz.Log("DCV Data from SMA" + str(dataDCV))
                     Domoticz.Log("Solar_Production Data from SMA" + str(data))
-
+                    Domoticz.Log("DCV Data from SMA" + str(dataDCV))
                 decoder = BinaryPayloadDecoder.fromRegisters(data, byteorder=Endian.Big, wordorder=Endian.Big)
                 decoderDCA = BinaryPayloadDecoder.fromRegisters(dataDCA, byteorder=Endian.Big, wordorder=Endian.Big)
                 decoderDCV = BinaryPayloadDecoder.fromRegisters(dataDCV, byteorder=Endian.Big, wordorder=Endian.Big)
@@ -111,7 +115,9 @@ class BasePlugin:
                 ACP2 = decoderACP2.decode_32bit_uint()
                 ACP3 = decoderACP3.decode_32bit_uint()
 
-                if Parameters["Mode6"] == 'Debug': Domoticz.Log("DCV decode " + str(DCV))
+                if Parameters["Mode6"] == 'Debug':
+                    Domoticz.Log("Solar_Production decode " + str(Solar_Production))
+                    Domoticz.Log("DCV decode " + str(DCV))
 
                 if (DCV == 2147483648) or (DCA == 2147483648) or (DCP == 2147483648) or (ACP == 2147483648) or (ACP1 == 2147483648) or (ACP2== 2147483648) or (ACP3 == 2147483648):
                     if Parameters["Mode6"] == 'Debug': Domoticz.Log("Fake DC Voltage " + str(DCV))
@@ -142,7 +148,7 @@ class BasePlugin:
             self.runInterval = int(Parameters["Mode3"]) * 6
 
         elif (self.runInterval <= 0 and Parameters["Mode2"] == "other"):
-            Domoticz.Log("Your inverter is SMA Sunny Boy")
+            Domoticz.Log("Your inverter is unknown")
             self.runInterval = int(Parameters["Mode3"]) * 6
 
 global _plugin
