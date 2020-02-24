@@ -23,9 +23,9 @@ Then restart domoticz with: ```sudo service domoticz.sh restart```
 
 Succesfully Tested on Domoticz version: 4.10717 (Stable)
 
-**Dependancies**
+**Dependencies**
 
-For this plugin to work you need to install some dependancies
+For this plugin to work you need to install some dependencies
 
 pymodbus AND pymodbusTCP
 
